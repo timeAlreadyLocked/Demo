@@ -7,15 +7,28 @@
 <body>
 <button type="button" onclick="cliccc()" value="请求">请求</button>
 <button type="button" onclick="clic()" value="请求">请求json</button>
+<form action="/loginPost" method="post">
+    下载内容：<input type="text"/>
+    <button type="submit" valu="提交">提交</button>
+</form>
 </body>
 <script type="application/javascript">
     function cliccc() {
         const http = new XMLHttpRequest()
-        http.open("GET", "http://localhost:8080/success.html", true)
-        http.send()
+        http.open("POST", "http://localhost:8080/loginPost", true)
+        const form = new FormData()
+        form.append("name", new Date().getTime() + '')
         http.onreadystatechange = function () {
             console.log(http.responseText)
+//            const name = http.getResponseHeader("content-disposition").substring(20,)
+            const bol = new Blob([http.response], {type: 'text/xls'})
+            const url = URL.createObjectURL(bol)
+            const link = document.createElement('a')
+            link.href = url
+            link.download = 'aa.text'
+            link.click()
         }
+        http.send(form)
     }
 
     function clic() {
